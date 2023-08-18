@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository // 데이터를 접근하는 객체를 만들 때 생성
 public interface CategoryRepository extends JpaRepository<Category, Long> { // <다루는 데이터 타입, id 타입>
     Optional<Category> findByName(String name);
-
+    Category getCategoryById(Long category_id);
     Page<Category> findByNameContains(Pageable pageable, String name);
     // 검색하는 이름이 포함된 데이터를 전부 가지고 옴.
 }
