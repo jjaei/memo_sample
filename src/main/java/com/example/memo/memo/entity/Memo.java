@@ -2,12 +2,15 @@ package com.example.memo.memo.entity;
 
 import com.example.memo.category.entity.Category;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
 @Getter
 @ToString
+@NoArgsConstructor
 public class Memo {
 
     @Id
@@ -26,4 +29,11 @@ public class Memo {
     @Column(columnDefinition = "TEXT")
     // 타입 지정할 때 사용, TEXT는 사이즈 제한이 없는 텍스트를 저장 할 때 사용
     String content;
+
+    @Builder
+    public Memo(Category category, String name, String content) {
+        this.category = category;
+        this.name = name;
+        this.content = content;
+    }
 }
