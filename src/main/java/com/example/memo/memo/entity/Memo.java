@@ -1,5 +1,6 @@
-package com.example.memo.entity;
+package com.example.memo.memo.entity;
 
+import com.example.memo.category.entity.Category;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.ToString;
