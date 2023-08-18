@@ -3,8 +3,9 @@ package com.example.memo.service;
 import com.example.memo.dto.CategoryDto;
 import com.example.memo.entity.Category;
 import com.example.memo.repository.CategoryRepository;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -17,7 +18,7 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-    @Transactional  // 예외가 발생하면 데이터베이스를 롤백해주는 기능 제공
+//    @Transactional  // 예외가 발생하면 데이터베이스를 롤백해주는 기능 제공
     public Category createCategory(CategoryDto categoryDto) {
         // Repository에서 데이터 가져오기
         Optional<Category> findOne = categoryRepository.findByName(categoryDto.getName());
@@ -36,5 +37,13 @@ public class CategoryService {
         return categoryRepository.findById(id).orElseThrow(  // 데이터가 있다면 데이터를 가지고 오고, 없다면 예외 발생
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "카테고리가 존재하지 않습니다.")
         );
+    }
+
+    public Page<Category> getCategories(Pageable pageable, String keyword) {
+        if (keyword == null) { // 키워드가 null이면 findAll 호출
+            return categoryRepository.findAll(pageable);
+        } else {
+            return categoryRepository.findByNameContains(pageable, keyword);
+        }
     }
 }
