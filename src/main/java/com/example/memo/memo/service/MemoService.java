@@ -6,8 +6,6 @@ import com.example.memo.memo.dto.MemoDto;
 import com.example.memo.memo.entity.Memo;
 import com.example.memo.memo.repository.MemoRepository;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -22,11 +20,7 @@ public class MemoService {
     private MemoRepository memoRepository;
     private CategoryRepository categoryRepository;
 
-    private static final Logger logger = LoggerFactory.getLogger(MemoService.class);
-
-
     public Memo createMemo(MemoDto memoDto) {
-        logger.info("Received MemoDto: {}", memoDto);
         Optional<Memo> findOne = memoRepository.findByName(memoDto.getName());
         if (findOne.isPresent()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "중복된 이름입니다.");
@@ -35,6 +29,7 @@ public class MemoService {
         Category category = categoryRepository.getCategoryById(memoDto.getCategory_id());
 
         Memo memo = Memo.builder()
+                .id(memoDto.getId())
                 .name(memoDto.getName())
                 .content(memoDto.getContent())
                 .category(category)
@@ -55,5 +50,29 @@ public class MemoService {
         } else {
             return memoRepository.findByNameContains(pageable, keyword);
         }
+    }
+
+    public Memo deleteMemo(Long id) {
+        Memo memo =  memoRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "삭제할 메모가 없습니다.")
+        );
+        memoRepository.deleteById(id);
+        return memo;
+    }
+
+    public Memo updateMemo(MemoDto memoDto) {
+        Optional<Memo> existMemo = memoRepository.findById(memoDto.getId());
+        if (existMemo.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정할 메모가 존재하지 않습니다.");
+        }
+
+        Memo memo = Memo.builder()
+                .id(memoDto.getId())
+                .name(memoDto.getName())
+                .content(memoDto.getContent())
+                .category(existMemo.get().getCategory())
+                .build();
+
+        return memoRepository.save(memo);
     }
 }

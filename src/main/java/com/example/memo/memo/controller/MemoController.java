@@ -28,4 +28,14 @@ public class MemoController {
     public Page<Memo> getMemos(Pageable pageable, @RequestParam String keyword) {
         return memoService.getMemos(pageable, keyword);
     }
+
+    @DeleteMapping("/{id}")
+    public Memo deleteMemo(@PathVariable Long id) {
+        return memoService.deleteMemo(id);
+    }
+
+    @PutMapping("/{id}")
+    public Memo updateMemo(@PathVariable Long id, @RequestBody MemoDto memoDto) {
+        return memoService.updateMemo(memoDto);
+    }
 }

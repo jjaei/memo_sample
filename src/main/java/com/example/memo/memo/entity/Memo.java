@@ -31,7 +31,8 @@ public class Memo {
     String content;
 
     @Builder
-    public Memo(Category category, String name, String content) {
+    public Memo(Long id, Category category, String name, String content) {
+        this.id = id;
         this.category = category;
         this.name = name;
         this.content = content;
