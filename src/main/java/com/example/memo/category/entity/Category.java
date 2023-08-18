@@ -1,4 +1,4 @@
-package com.example.memo.entity;
+package com.example.memo.category.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

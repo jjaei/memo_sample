@@ -1,4 +1,4 @@
-package com.example.memo.dto;
+package com.example.memo.category.dto;
 
 import lombok.Data;
 

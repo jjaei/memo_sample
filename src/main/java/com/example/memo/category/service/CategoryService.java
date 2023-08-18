@@ -1,8 +1,8 @@
-package com.example.memo.service;
+package com.example.memo.category.service;
 
-import com.example.memo.dto.CategoryDto;
-import com.example.memo.entity.Category;
-import com.example.memo.repository.CategoryRepository;
+import com.example.memo.category.dto.CategoryDto;
+import com.example.memo.category.entity.Category;
+import com.example.memo.category.repository.CategoryRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
